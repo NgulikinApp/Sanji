@@ -23,14 +23,8 @@
     /*
         Parameters
     */
-    $user_id = $_GET['user_id'];
-    $page = $_GET['page'];
-    $pagesize = $_GET['pagesize'];
-    $key = $_GET['key'];
-    
-    if(checkingAuthKey($con,$user_id,$key) == 0){
-        invalidKey();
-    }
+    $linkArray = explode('/',$actual_link);
+    $user_id = array_values(array_slice($linkArray, -1))[0];
     
     /*
         Function location in : /model/general/get_auth.php
@@ -48,29 +42,24 @@
             $exp = JWT::decode($token, $secretKey, array('HS256'));
             
             $stmt = $con->prepare("SELECT 
-                                    shop.shop_id, 
-                                    shop_name,
-                                    shop_icon,
-                                    username,
-                                    DATEDIFF(CURDATE(),CAST(shop_createdate AS DATE)) AS difdate,
-                                    user_shop_favorites AS count_shop
-                        FROM 
-                                    shop
-                                    LEFT JOIN shop_favorite ON shop_favorite.shop_id = shop.shop_id
-                                    LEFT JOIN `user` ON `user`.user_id = shop_favorite.user_id
-                                WHERE
-                                    shop_favorite.user_id = ?
-                        		ORDER BY 
-                                    shop_favorite.shop_id DESC
-                        		LIMIT ?,?");
+                                            fullname, 
+                                            dob,
+                                            username,
+                                            gender,
+                                            phone,
+                    						email,
+                    						user_photo
+                                    FROM 
+                                            user
+                    		        WHERE
+                    		                user_id=?");
             
-            $stmt->bind_param("sii", $user_id,$page,$pagesize);
+            $stmt->bind_param("s", $user_id);
             
             /*
                 Function location in : functions.php
             */
-            
-            favorite($stmt,$pagesize);
+            user($stmt);
         }catch(Exception $e){
             /*
                 Function location in : /model/general/functions.php

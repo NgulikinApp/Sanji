@@ -1,6 +1,6 @@
 <?php
     /*
-        This API used in ngulikin.com/js/module-product.js
+        This API used in ngulikin.com/js/module-shop.js
     */
     
     //--------------------------------------------------------------------------
@@ -50,7 +50,7 @@
                
             $stmt->bind_param("is", $request['shop_id'],$request['user_id']);
             
-             /*
+            /*
                 Function location in : functions.php
             */
             $count_rows = count_rows($stmt);
@@ -100,6 +100,11 @@
             */
             $count_val = calc_val($stmt);
             
+            $stmt->close();
+            
+            /*
+                Function location in : functions.php
+            */
             favorite($request['shop_id'],$request['user_id'],$count_val);
         }catch(Exception $e){
             /*

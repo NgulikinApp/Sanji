@@ -90,6 +90,33 @@
     
     /*
         Function referred on : all
+        Used for checking jwt token is verified
+        Return data:
+                - status (YES/NO)
+                - message
+                - result
+    */
+    function credentialVerifiedCalc($data,$total,$pagesize){
+        $total = intval($total);
+        if($total != 0){
+            $total = ceil($total/intval($pagesize));
+        }
+        
+        $dataout = array(
+            			'status' => "OK",
+            			'message' => "Valid credential",
+            			'total_page' => $total,
+            			'response' => $data
+            	);
+        
+        /*
+            Function location in : /model/generatejson.php
+        */
+        return generateJSON($dataout);
+    }
+    
+    /*
+        Function referred on : all
         Used for executing the query
     */
     function runQuery($stmt){

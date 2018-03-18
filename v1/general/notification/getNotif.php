@@ -23,14 +23,9 @@
     /*
         Parameters
     */
-    $user_id = $_GET['user_id'];
-    $page = $_GET['page'];
-    $pagesize = $_GET['pagesize'];
-    $key = $_GET['key'];
-    
-    if(checkingAuthKey($con,$user_id,$key) == 0){
-        invalidKey();
-    }
+    $linkArray = explode('/',$actual_link);
+    $id = intval(array_values(array_slice($linkArray, -1))[0]);
+    $keyword = $_GET['keyword'];
     
     /*
         Function location in : /model/general/get_auth.php
@@ -47,30 +42,34 @@
             //secretKey variabel getting from : /model/jwt.php
             $exp = JWT::decode($token, $secretKey, array('HS256'));
             
-            $stmt = $con->prepare("SELECT 
-                                    shop.shop_id, 
-                                    shop_name,
-                                    shop_icon,
-                                    username,
-                                    DATEDIFF(CURDATE(),CAST(shop_createdate AS DATE)) AS difdate,
-                                    user_shop_favorites AS count_shop
-                        FROM 
-                                    shop
-                                    LEFT JOIN shop_favorite ON shop_favorite.shop_id = shop.shop_id
-                                    LEFT JOIN `user` ON `user`.user_id = shop_favorite.user_id
-                                WHERE
-                                    shop_favorite.user_id = ?
-                        		ORDER BY 
-                                    shop_favorite.shop_id DESC
-                        		LIMIT ?,?");
+            $sql = "SELECT 
+                        notification_id, 
+                        sender_id AS user_id,
+                        notification_desc,
+                        notification_photo,
+                        DATE_FORMAT(notification_createdate, '%W, %d %M %Y') AS notification_createdate,
+                        username
+                    FROM 
+                        notification
+                        LEFT JOIN `user` ON notification.user_id=`user`.user_id
+                    WHERE
+                        notification.user_id = ?";
+            if($keyword != ''){
+                $sql .= " AND notification_desc LIKE '%?%'";
+            }
+            $sql .= " ORDER BY 
+                        notification_id DESC";
+            $stmt = $con->prepare($sql);
             
-            $stmt->bind_param("sii", $user_id,$page,$pagesize);
-            
+            if($keyword != ''){
+                $stmt->bind_param("ss", $id,$keyword);
+            }else{
+                $stmt->bind_param("s", $id);
+            }
             /*
                 Function location in : functions.php
             */
-            
-            favorite($stmt,$pagesize);
+            notification($stmt);
         }catch(Exception $e){
             /*
                 Function location in : /model/general/functions.php

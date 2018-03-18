@@ -81,7 +81,7 @@
                     }else{
                         $data[$key] = "valid";
                     }
-                }else if($key == 'dob' && checkdate(explode("/", $value)[0], explode("/", $value)[1], explode("/", $value)[2]) == false){
+                }else if($key == 'dob' && checkdate(explode("-", $value)[2], explode("-", $value)[1], explode("-", $value)[0]) == false){
                     $data[$key] = "invalid";
                     $arrayCheck = false;
                 }else{
@@ -99,8 +99,6 @@
                 */
                 $user_id = getID(16);
                 $ismanual = intval($request['manual']);
-                $dobarray = explode("/",$request['dob']);
-                $dob = $dobarray[2].'-'.$dobarray[0].'-'.$dobarray[1];
                 
                 $passwordSocmed = '';
                 $user_isactive = 0;
@@ -131,7 +129,7 @@
                                                     ) 
                                                     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
                
-                $stmt->bind_param("ssssssssssssss",$user_id,$request['username'],$request['name'],$request['password'],$request['email'],$request['nohp'],$dob,$request['gender'],$key,$request['source'],$request['socmed'],$passwordSocmed,$user_isactive,$request['id_socmed']);
+                $stmt->bind_param("ssssssssssssss",$user_id,$request['username'],$request['name'],$request['password'],$request['email'],$request['nohp'],$request['dob'],$request['gender'],$key,$request['source'],$request['socmed'],$passwordSocmed,$user_isactive,$request['id_socmed']);
                 /*
                     Function location in : /model/general/functions.php
                 */
@@ -158,7 +156,7 @@
                 	$mail->send();
                 }
                 
-                $path = dirname($_SERVER["DOCUMENT_ROOT"]).'/'.IMAGES_URL.'/srv/'.$request['username'];
+                $path = dirname($_SERVER["DOCUMENT_ROOT"]).'/'.IMAGES_URL.'/'.$request['username'];
                 if (!file_exists($path)) {
                     mkdir($path, 0700, true);
                 }

@@ -24,7 +24,7 @@
         Parameters
     */
     $filter = $_GET['filter'];
-    $user_id = $_GET['user_id'];
+    $user_id = @$_GET['user_id'];
     
     /*
         Function location in : /model/general/get_auth.php

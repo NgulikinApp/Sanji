@@ -14,7 +14,7 @@
             $data[] = array(
                       "category_id" => intval($col1),
                       "category_name" => $col2,
-                      "category_url" => 'http://init.ngulikin.com/img/category/'.$col3
+                      "category_url" => 'http://'.INIT_URL.'/img/category/'.$col3
                     );
         }
         
@@ -41,7 +41,7 @@
             $data[] = array(
                       "product_id" => intval($col1),
                       "product_name" => $col3,
-                      "product_image" => 'http://images.ngulikin.com/'.urlencode(base64_encode ($col2.'/product/'.$col4)),
+                      "product_image" => 'http://'.IMAGES_URL.'/'.$col2.'/product/'.$col4,
                       "product_price" => number_format($col5, 0, '.', '.'),
                       "product_isfavorite" => $col6
                     );
@@ -69,32 +69,20 @@
         
         while ($stmt->fetch()) {
                 $total = $col7;
-                if($col3 == ''){
-                    $icon = "https://s4.bukalapak.com/img/409311077/s-194-194/TV_LED_Sharp_24__LC_24LE170i.jpg";
-                }else{
-                    $icon = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col5.'/shop/'.$col3));
-                }
                 $data[] = array(
-                                    "product_id" => $col1,
-                                      "product_name" => $col2,
-                                      "product_image" =>  $icon,
-                                      "product_price" =>  $col4,
-                                      "product_difdate" => $col6
-                                    );
+                            "product_id" => $col1,
+                            "product_name" => $col2,
+                            "product_image" => 'http://'.IMAGES_URL.'/'.$col5.'/product/'.$col3,
+                            "product_price" =>  $col4,
+                            "product_difdate" => $col6
+                            );
         }
         
         $stmt->close();
-            
-        $dataout = array(
-            			'status' => "OK",
-            			'message' => "Valid credential",
-            			'total' => ceil($total/intval($pagesize))+1,
-            			'response' => $data
-            	);
         
         /*
-            Function location in : /model/generatejson.php
+            Function location in : /model/general/functions.php
         */
-        generateJSON($dataout);
+        credentialVerifiedCalc($data,$total,$pagesize);
     }
 ?>

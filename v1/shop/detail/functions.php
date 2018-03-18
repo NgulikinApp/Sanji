@@ -1,4 +1,19 @@
 <?php
+    /*
+        Function referred on : getData.php
+        Used for returning the detail data shop
+        Return data:
+                - shop_id
+                - user_id
+                - username
+                - shop_name
+                - shop_icon
+                - shop_description
+                - shop_banner
+                - university
+                - user_photo
+                - shop_isfavorite (0/1)
+    */
     function detail($stmt){
         $stmt->execute();
     
@@ -8,19 +23,19 @@
     
         while ($stmt->fetch()) {
             if($col5 != ""){
-                $icon = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col3.'/shop/'.$col5));
+                $icon = 'http://'.IMAGES_URL.'/'.$col3.'/shop/'.$col5;
             }else{
-                $icon = "http://init.ngulikin.com/img/icontext.png";
+                $icon = "http://".INIT_URL."/img/icontext.png";
             }
             
             if($col9 != "no-photo.jpg"){
-                $user_photo = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col3.'/'.$col9));
+                $user_photo = 'http://'.IMAGES_URL.'/srv/'.$col3.'/'.$col9;
             }else{
-                $user_photo = "http://init.ngulikin.com/img/".$col9;
+                $user_photo = "http://".INIT_URL."/img/".$col9;
             }
             
             if($col7 != ""){
-                $shop_banner = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col3.'/'.$col7));
+                $shop_banner = 'http://'.IMAGES_URL.'/'.$col3.'/'.$col7;
             }else{
                 $shop_banner = $col7;
             }

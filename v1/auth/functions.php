@@ -129,9 +129,15 @@
     function get_data_signin($stmt){
         $stmt->execute();
     
-        $stmt->bind_result($col1,$col2,$col3,$col4,$col5,$col6,$col7,$col8);
+        $stmt->bind_result($col1,$col2,$col3,$col4,$col5,$col6,$col7,$col8,$col9);
         
         $stmt->fetch();
+        
+        if($col9 != "no-photo.jpg"){
+            $photo = 'http://'.IMAGES_URL.'/'.$col2.'/'.$col9;
+        }else{
+            $photo = "http://".INIT_URL."/img/".$col9;
+        }
         
         $data = array(
                         "user_id"=>$col1,
@@ -141,7 +147,8 @@
                         "nohp"=>$col5,
                         "dob"=>$col6,
                         "gender"=>$col7,
-                        "key"=>$col8
+                        "key"=>$col8,
+                        "user_photo"=>$photo
                     );
         
         $dataout = array(
@@ -237,7 +244,8 @@
                                     phone,
                                     dob,
                                     gender,
-                                    user_key
+                                    user_key,
+                                    user_photo
                                 FROM 
                                     user 
                                 WHERE 

@@ -15,14 +15,14 @@
             $countImage = sizeof($imageArray);
             
             if($col10 != ""){
-                $icon = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col3.'/product/'.$col10));
+                $icon = 'http://'.IMAGES_URL.'/'.$col3.'/product/'.$col10;
             }else{
-                $icon = "http://init.ngulikin.com/img/icontext.png";
+                $icon = "http://".INIT_URL."/img/icontext.png";
             }
             
             $product_images = array();
             for($i=0;$i<$countImage;$i++){
-                $image = 'http://images.ngulikin.com/'.urlencode(base64_encode ($col3.'/product/'.$imageArray[$i]));
+                $image = 'http://'.IMAGES_URL.'/'.$col3.'/product/'.$imageArray[$i];
                 array_push($product_images,$image);
             }
             $data['product_id'] = $col1;
