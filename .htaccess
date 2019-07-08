@@ -1,3 +1,8 @@
 RewriteEngine On
+
+RewriteCond %{HTTPS} off
+RewriteRule (.*) https://www.%{HTTP_HOST}%{REQUEST_URI} [L]
+
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ linking.php [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule .* cont_rewrite.php/$0 [PT,L] 
