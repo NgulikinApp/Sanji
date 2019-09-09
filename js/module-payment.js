@@ -1,22 +1,22 @@
-var questionsDo = {};
+var paymentDo = {};
     
 $( document ).ready(function() {
     initGeneral();
-    initServices();
+    initPayment();
 });
 
-function initServices(){
-    listQuestions();
+function initPayment(){
+    listPayments();
 }
 
-function listQuestions(){
+function listPayments(){
     if(sessionStorage.getItem('tokenNgulikin') === null){
-        generateToken("listQuestions");
+        generateToken("listPayments");
     }else{
         $('.container-loader100').removeClass('dis-none').addClass('dis-block');
         $.ajax({
             type: 'GET',
-            url: ASSISTANCESERVICES_API,
+            url: PAYMENT_API,
             dataType: 'json',
             beforeSend: function(xhr, settings) { 
                 xhr.setRequestHeader('Authorization','Bearer ' + btoa(sessionStorage.getItem('tokenNgulikin')));
@@ -41,15 +41,15 @@ function listQuestions(){
                             element += '<div class="dis-block">';
                             element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center box-elip">'+val.fullname+'</div>';
                             element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center box-elip">'+val.email+'</div>';
-                            element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center m-l-min box-elip default-color">'+val.desc+'</div>';
+                            element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center m-l-min box-elip default-color">'+val.invoice_no+'</div>';
                             element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-img bgwhite dis-inline-block brdr-grey text-center m-l-min">';
-                            element += '        <a class="popup" href="/img/no-image.jpg" title="Deskripsi pertanyaan">';
-                            element += '            <img src="/img/no-image.jpg" width="50" height="50"/>';
+                            element += '        <a class="popup" href="'+val.photopayment+'" title="Bukti Pembayaran">';
+                            element += '            <img src="'+val.photopayment+'" width="50" height="50"/>';
                             element += '        </a>';
                             element += '    </div>';
-                            element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center">'+val.date+'</div>';
+                            element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center">'+val.paiddate+'</div>';
                             element += '    <div class="'+tableClass+' table-border-side table-content table-confirm100-text bgwhite dis-inline-block brdr-grey text-center p-t-5 p-b-5 m-l-min">';
-                            element += '        <button class="btn-ver text-up fs-10 p-t-4 p-b-4 m-b-5" data-id="'+val.questions_id+'">selesai</button>';
+                            element += '        <button class="btn-ver text-up fs-10 p-t-4 p-b-4 m-b-5" data-id="'+val.invoice_id+'">verifikasi</button>';
                             element += '    </div>';
                             element += '</div>';
                         });
@@ -67,43 +67,41 @@ function listQuestions(){
                 	});
                 	
                 	$('.btn-ver').click(function(e){
-                	    var questions_id = $(this).data('id');
-                        $('.btn-ver').click(function(e){
-                            $.confirm({
-                                title: 'Konfirmasi',
-                                icon: 'fa fa-warning',
-                                animation: 'top',
-                                animateFromElement: false,
-                                type: 'dark',
-                                content: 'Yakin ingin diselesaikan?',
-                                buttons: {
-                                    ya: function () {
-                                        questionsDo.questions_id = questions_id;
-                                        questionsAction();
-                                    },
-                                        tidak: function () {
-                                    }
+                	    var invoice_id = $(this).data('id');
+                        $.confirm({
+                            title: 'Konfirmasi',
+                            icon: 'fa fa-warning',
+                            animation: 'top',
+                            animateFromElement: false,
+                            type: 'dark',
+                            content: 'Yakin ingin diverifikasi?',
+                            buttons: {
+                                ya: function () {
+                                    paymentDo.invoice_id = invoice_id;
+                                    paymentAction();
+                                },
+                                    tidak: function () {
                                 }
-                            });
+                            }
                         });
                     });
                 }else{
-                    generateToken("listQuestions");
+                    generateToken("listPayments");
                 }
             } 
         });
     }
 }
 
-function questionsAction(){
+function paymentAction(){
     if(sessionStorage.getItem('tokenNgulikin') === null){
-        generateToken("questionsAction");
+        generateToken("paymentAction");
     }else{
         $.ajax({
             type: 'POST',
-            url: ASSISTANCESERVICES_ACTION_API,
+            url: PAYMENT_ACTION_API,
             data:JSON.stringify({ 
-                questions_id : questionsDo.questions_id
+                invoice_id : paymentDo.invoice_id
             }),
             dataType: 'json',
             beforeSend: function(xhr, settings) { 
@@ -111,9 +109,9 @@ function questionsAction(){
             },
             success: function(result) {
                 if(result.status ===  'DENIED'){
-                    generateToken("questionsAction");
+                    generateToken("paymentAction");
                 }else{
-                    listQuestions();
+                    listPayments();
                 }
             }
         });
