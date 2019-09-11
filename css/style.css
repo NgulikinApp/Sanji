@@ -323,7 +323,7 @@ canvas{
     overflow: hidden;
 }
 
-.container-notif100,.table-confirm100-list{
+.container-notif100,.container-notif100,.table-confirm100-list{
     width: 949px;
 }
 
@@ -361,7 +361,7 @@ textarea{
     font-family: proxima_nova_ltsemibold;
 }
 
-.btn-notif{
+.btn-notif,.btn-banner{
     background-color:#56C0ED;
     border: 0;
     border-radius: 5px;
@@ -369,11 +369,11 @@ textarea{
     box-shadow: 3px 3px 5px #888888;
 }
 
-.btn-notif:hover{
+.btn-notif:hover,.btn-banner:hover{
     background-color:#004F82;
 }
 
-label[for="file-notif"]{
+label[for="file-notif"],label[for="file-banner"]{
     display: block;
     position: absolute;
     top: 0;
@@ -385,11 +385,16 @@ label[for="file-notif"]{
     margin-left: 118px;
 }
 
-label[for="file-notif"]:hover{
+label[for="file-notif"]:hover,label[for="file-banner"]:hover{
     color:#6D839A;;
 }
 
-#file-notif{
+label[for="file-banner"]{
+    right:5;
+    margin-left: 0px;
+}
+
+#file-notif,#file-banner{
     visibility: hidden;
 }
 

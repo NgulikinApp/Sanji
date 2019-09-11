@@ -49,6 +49,9 @@
 							include('api/v1/assistanceservices/list/pendingQuestions.php');
 				    }
 				break;
+				case 'banner':
+        	        include('api/v1/banner/changeBanner.php');
+        	    break;
 	            case 'generateToken':
 					include('api/v1/general/system/generateToken.php');
 				break;

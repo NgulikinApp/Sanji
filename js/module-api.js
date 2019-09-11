@@ -3,6 +3,7 @@ var VERSION = '/v1';
 var BASE_URL = "https://www.admin.ngulikin.com"+VERSION;
 
 var ASSISTANCESERVICES_API = BASE_URL + "/as",
+    BANNER_API = BASE_URL + "/banner",
     GRAPHSTATISTICS_API = BASE_URL + "/graphstatistics",
     NOTIF_API = BASE_URL + "/notif",
     PAYMENT_API = BASE_URL + "/payment",

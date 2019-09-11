@@ -7,6 +7,9 @@
 <html>
     <?php include 'web/library.php';?>
     <body>
+        <?php
+            include $_SERVER['DOCUMENT_ROOT'].'/web/loaderPopup.php';
+    	?>
         <div class="limiter w-full">
             <?php
                 include $_SERVER['DOCUMENT_ROOT'].'/web/nav/headerMenu.php';
