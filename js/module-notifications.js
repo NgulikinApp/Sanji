@@ -10,27 +10,43 @@ function initNotif(){
     });
     
     $("#file-notif").change(function(){
-        uploadPhoto();
+        if (this.files && this.files[0]) {
+          var reader = new FileReader();
+              reader.onload = (function(theFile) {
+                  var image = new Image();
+                      image.src = theFile.target.result;
+                  
+                      image.onload = function() {
+                          $("#img-notif").attr('src', this.src);
+                      };
+              });
+          reader.readAsDataURL(this.files[0]);
+        }
+    });
+    
+    $(".btn-notif").click(function(){
+        sendNotif();
     });
 }
 
-function uploadPhoto(){
+function sendNotif(){
     var data = new FormData(),
         filePath = $('#file-notif').val(),
         fileExt = (filePath.substr(filePath.lastIndexOf('\\') + 1).split('.')[1]).toLowerCase(),
         filePhoto = $('#file-notif')[0].files[0],
         fileSize = filePhoto.size/ 1024 / 1024;
         
-        data.append('type', 'product');
+        data.append('desc', $('.inpt-notif-desc').val());
         data.append('file', filePhoto);
     if(sessionStorage.getItem('tokenNgulikin') === null){
-        generateToken("uploadPhotoProduct");
+        generateToken("sendNotif");
     }else{
         if(fileSize < 2){
             if(fileExt === 'jpg' || fileExt === 'png'){
-                /*$.ajax({
+                $('.container-loader100').removeClass('dis-none').addClass('dis-block');
+                $.ajax({
                     type: 'POST',
-                    url: PUTFILE_API,
+                    url: NOTIF_API,
                     data: data,
                     async: true,
                     contentType: false, 
@@ -39,13 +55,22 @@ function uploadPhoto(){
                     beforeSend: function(xhr, settings) { 
                         xhr.setRequestHeader('Authorization','Bearer ' + btoa(sessionStorage.getItem('tokenNgulikin')));
                     },
-                    success: function(result){
-                        productList.push(result.src);
-                        $('.loaderPopup').addClass('hidden');
-                        
-                        readProductURL();
+                    success: function(data, status){
+                        if(data.status === "OK"){
+                            $('.container-loader100').removeClass('dis-block').addClass('dis-none');
+                            $.alert({
+                                title: 'Alert!',
+                                content: 'Notifikasi sudah dikirim',
+                                icon: 'fa fa-warning',
+                                animation: 'top',
+                                type: 'dark',
+                                animateFromElement: false
+                            });
+                        }else{
+                            generateToken("sendNotif");
+                        }
                     }
-                });*/
+                });
             }else{
                 $.alert({
                     title: 'Alert!',
@@ -67,18 +92,4 @@ function uploadPhoto(){
             });
         }
     }
-}
-
-function readProductURL() {
-    var fileListDisplay = document.getElementById('img-notif');
-    fileListDisplay.innerHTML = '';
-    productList.forEach(function (file, index) {
-        
-        var img = document.createElement("img");
-            img.setAttribute("src", file);
-            img.setAttribute("width", "60");
-            img.setAttribute("height", "60");
-          
-          fileListDisplay.appendChild(img);
-    });
 }

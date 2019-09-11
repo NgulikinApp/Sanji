@@ -32,6 +32,9 @@
 	    case 'notif':
 	        include('web/body/notif/index.php');
 	    break;
+	    case 'payment':
+	        include('web/body/payment/index.php');
+	    break;
 	    case 'services':
 	        include('web/body/services/index.php');
 	    break;
@@ -51,6 +54,18 @@
 				break;
 				case 'graphstatistics':
 					include('api/v1/dashboard/graphStatistics.php');
+				break;
+				case 'notif':
+					include('api/v1/notification/notif.php');
+				break;
+				case 'payment':
+					switch (@$routes[2]) {
+				        case 'us':
+                			include('api/v1/payment/detail/updateStatusPayment.php');
+                		break;
+						default :
+							include('api/v1/payment/list/uploadedProof.php');
+				    }
 				break;
 	            case 'sc':
 					switch (@$routes[2]) {

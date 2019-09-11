@@ -373,9 +373,24 @@ textarea{
     background-color:#004F82;
 }
 
+label[for="file-notif"]{
+    display: block;
+    position: absolute;
+    top: 0;
+    padding: 10px;
+    background-color: #3FC3FF;
+    text-align: center;
+    color: #FFF;
+    cursor: pointer;
+    margin-left: 118px;
+}
+
+label[for="file-notif"]:hover{
+    color:#6D839A;;
+}
+
 #file-notif{
-    visibility:hidden;
-    display: inline;
+    visibility: hidden;
 }
 
 .default-color{

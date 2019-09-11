@@ -16,16 +16,17 @@
             <div class="dis-inline-block brdr-solid-grey notif-menu hov-pointer text-center p-t-5 p-b-5">promo</div>
         </div>
         <div class="p-t-20 p-b-20">
-            <div class="dis-inline-block default-color container-notif100-left">Deskripsi Toko</div>
+            <div class="dis-inline-block default-color container-notif100-left">Deskripsi</div>
             <div class="dis-inline-block container-notif100-right">
                 <textarea class="w-full brdr-solid-grey inpt-notif-desc p-t-5 p-b-5 p-l-5 p-r-5"></textarea>
             </div>
         </div>
         <div>
-            <div class="dis-inline-block container-notif100-left default-color">Logo Toko</div>
-            <div class="dis-inline-block container-notif100-right">
+            <div class="dis-inline-block container-notif100-left default-color">Logo</div>
+            <div class="dis-inline-block container-notif100-right pos-relative">
+                <img id="img-notif" src="/img/no-image.jpg" width="150" height="150" />
                 <label for="file-notif" class="hov-pointer">
-                    <img id="img-notif" src="/img/no-image.jpg" width="150" height="150" />
+                    <i class="fa fa-pencil"></i>
                 </label>
                 <input type="file" id="file-notif" name="file[]"/>
             </div>
